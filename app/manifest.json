@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+
+  "name": "Triton Scheduler",
+  "description": "This extension auto populates a Google Calendar from an academic schedule in WebReg.",
+  "version": "1.0",
+
+  "content_scripts": [
+  	{
+  		"matches": ["https://act.ucsd.edu/webreg2/*"],
+  		"js": ["inject.js"]
+  	}
+  ],
+
+  "permissions": [
+    "https://ajax.googleapis.com/"
+  ]
+}
