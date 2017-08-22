@@ -8,7 +8,7 @@
   "content_scripts": [
   	{
   		"matches": ["https://act.ucsd.edu/webreg2/*"],
-  		"js": ["jquery-3.2.1.js", "jquery.copycss.js", "inject.js"]
+  		"js": ["dependencies/jquery-3.2.1.js", "dependencies/jquery.copycss.js", "inject.js"]
   	}
   ],
 
