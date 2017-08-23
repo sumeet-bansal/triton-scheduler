@@ -37,18 +37,60 @@ for(var i in styles) {
 	exportButton.style[i] = styles[i];
 }
 
+// event listener for clicks on the export button
 document.getElementById("export-id").addEventListener("click", function() {
+
+	// gets main WebReg course table
 	var table = document.getElementById("list-id-table").childNodes[0];
 	console.log(table);
 
-	var course;
+	// gets 4-digit code for the quarter
+	var terms = document.getElementById("mainpage-select-term");
+	console.log(terms.childNodes[0].getAttribute("value").slice(-4));
+
+	var crse, status;	// within table scope because they carry over between rows
+
+	// iterates through table rows
 	for (var i = 1, row; row = table.rows[i]; i++) {
+
+		// row-specific properties
+		var type, days, time, bldg, room;
 		console.log(row);
+
+		// iterates through row cells
 		for (var j = 0, cell; cell = row.cells[j]; j++) {
-			if (cell.getAttribute("aria-describedby") == "list-id-table_colsubj") {
-				course =  cell.innerText != " " ? cell.innerText : course;
+
+			// gets cell type and assigns values as appropriate
+			switch (cell.getAttribute("aria-describedby")) {
+				case "list-id-table_colsubj":
+					crse = cell.innerText && cell.innerText != " " ? cell.innerText : crse;
+					break;
+				case "list-id-table_FK_CDI_INSTR_TYPE":
+					type = cell.innerText && cell.innerText != " " ? cell.innerText : null;
+					break;
+				case "list-id-table_DAY_CODE":
+					days = cell.innerText && cell.innerText != " " ? cell.innerText : null;
+					break;
+				case "list-id-table_coltime":
+					time = cell.innerText && cell.innerText != " " ? cell.innerText : null;
+					break;
+				case "list-id-table_BLDG_CODE":
+					bldg = cell.innerText && cell.innerText != " " ? cell.innerText : null;
+					break;
+				case "list-id-table_ROOM_CODE":
+					room = cell.innerText && cell.innerText != " " ? cell.innerText : null;
+					break;
+				case "list-id-table_colstatus":
+					status = cell.innerText && cell.innerText != " " ? cell.innerText : status;
+					break;
 			}
 		}
-		console.log(course);
+		console.log(crse);
+		console.log(type);
+		console.log(days != null ? days.split(' ') : days);
+		console.log(time != null ? time.split('-') : time);
+		console.log(bldg);
+		console.log(room);
+		console.log(status);
 	}
 });
