@@ -36,3 +36,19 @@ var styles = {
 for(var i in styles) {
 	exportButton.style[i] = styles[i];
 }
+
+document.getElementById("export-id").addEventListener("click", function() {
+	var table = document.getElementById("list-id-table").childNodes[0];
+	console.log(table);
+
+	var course;
+	for (var i = 1, row; row = table.rows[i]; i++) {
+		console.log(row);
+		for (var j = 0, cell; cell = row.cells[j]; j++) {
+			if (cell.getAttribute("aria-describedby") == "list-id-table_colsubj") {
+				course =  cell.innerText != " " ? cell.innerText : course;
+			}
+		}
+		console.log(course);
+	}
+});
