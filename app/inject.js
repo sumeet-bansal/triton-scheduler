@@ -37,16 +37,52 @@ for(var i in styles) {
 	exportButton.style[i] = styles[i];
 }
 
+/**
+ * Represents a single "course event" (e.g. a discussion section, lecture).
+ * @param title the title of the event (e.g. "CSE 30 - Lecture")
+ * @param days the days the event is being held, represented as an array of days and
+ *             an optional date (e.g. for finals), example: ["MWF"] or ["W", "12/14/2017"]
+ * @param time the time the event is being held, as an array (e.g. ["8:00a","8:50a"], ["6:30p","9:20p"])
+ * @param location the location the event is being held in, as a string (e.g. "WLH 2001", "APM B402A") 
+ */
+class CourseEvent {
+	constructor(title, days, time, location) {
+		this.title = title;
+		this.days = days;
+		this.time = time;
+		this.location = location;
+	}
+}
+
+/**
+ * Represents an entire academic calendar for the quarter.
+ * @param quarter the four-character code for the quarter (e.g. "FA17")
+ */
+class AcademicCalendar {
+	constructor(quarter) {
+		this.quarter = quarter;
+		this.events = [];
+	}
+
+    /**
+     * Adds a CourseEvent to the internal array of CourseEvents.
+     * @param course the CourseEvent being added to the calendar
+     */
+	addCourseEvent(course) {
+		this.events.push(course);
+	}
+}
+
 // event listener for clicks on the export button
 document.getElementById("export-id").addEventListener("click", function() {
 
 	// gets main WebReg course table
 	var table = document.getElementById("list-id-table").childNodes[0];
-	console.log(table);
 
 	// gets 4-digit code for the quarter
 	var terms = document.getElementById("mainpage-select-term");
-	console.log(terms.childNodes[0].getAttribute("value").slice(-4));
+	var current = terms.childNodes[0].getAttribute("value").slice(-4);
+	var calendar = new AcademicCalendar(current);
 
 	var crse, status;	// within table scope because they carry over between rows
 
@@ -55,7 +91,6 @@ document.getElementById("export-id").addEventListener("click", function() {
 
 		// row-specific properties
 		var type, days, time, bldg, room;
-		console.log(row);
 
 		// iterates through row cells
 		for (var j = 0, cell; cell = row.cells[j]; j++) {
@@ -69,10 +104,10 @@ document.getElementById("export-id").addEventListener("click", function() {
 					type = cell.innerText && cell.innerText != " " ? cell.innerText : null;
 					break;
 				case "list-id-table_DAY_CODE":
-					days = cell.innerText && cell.innerText != " " ? cell.innerText : null;
+					days = cell.innerText && cell.innerText != " " ? cell.innerText.split(' ') : null;
 					break;
 				case "list-id-table_coltime":
-					time = cell.innerText && cell.innerText != " " ? cell.innerText : null;
+					time = cell.innerText && cell.innerText != " " ? cell.innerText.split('-') : null;
 					break;
 				case "list-id-table_BLDG_CODE":
 					bldg = cell.innerText && cell.innerText != " " ? cell.innerText : null;
@@ -85,12 +120,14 @@ document.getElementById("export-id").addEventListener("click", function() {
 					break;
 			}
 		}
-		console.log(crse);
-		console.log(type);
-		console.log(days != null ? days.split(' ') : days);
-		console.log(time != null ? time.split('-') : time);
-		console.log(bldg);
-		console.log(room);
-		console.log(status);
+		if (type != null) {
+			var title = crse + " - " + type;
+			var location = bldg + " " + room;
+			var event = new CourseEvent(title, days, time, location);
+			calendar.addCourseEvent(event);
+//			console.log("MTuWThF".split(/(?=[A-Z])/));
+		}
 	}
+
+	console.log(calendar);
 });
