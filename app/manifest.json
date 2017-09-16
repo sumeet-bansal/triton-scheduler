@@ -5,6 +5,11 @@
   "description": "This extension auto populates a Google Calendar from an academic schedule in WebReg.",
   "version": "1.0",
 
+  "background": {
+    "persistent": false,
+    "scripts": ["background.js"]
+  },
+
   "content_scripts": [
   	{
   		"matches": ["https://act.ucsd.edu/webreg2/*"],
@@ -13,6 +18,14 @@
   ],
 
   "permissions": [
-    "https://ajax.googleapis.com/"
-  ]
+    "https://ajax.googleapis.com/",
+    "identity"
+  ],
+
+  "oauth2": {
+    "client_id": "477627763960-6nscua5lsp6ks7ob48e6g6cd7q4t3lq0.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar"
+    ]
+  }
 }

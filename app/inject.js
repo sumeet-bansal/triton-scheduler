@@ -130,4 +130,20 @@ document.getElementById("export-id").addEventListener("click", function() {
 	}
 
 	console.log(calendar);
+
+	var message = {
+		quarter: calendar.quarter,
+		events: calendar.events
+	}
+	chrome.runtime.sendMessage(message, function(response) {
+	  console.log(response);
+	});
+
+
+
 });
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log(request.message);
+  });
