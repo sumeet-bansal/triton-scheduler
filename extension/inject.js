@@ -104,7 +104,7 @@ document.getElementById("export-id").addEventListener("click", function() {
 					type = cell.innerText && cell.innerText != " " ? cell.innerText : null;
 					break;
 				case "list-id-table_DAY_CODE":
-					days = cell.innerText && cell.innerText != " " ? cell.innerText.split(' ') : null;
+					days = cell.innerText && cell.innerText != " " ? cell.innerText.split(/(?=[A-Z])/) : null;
 					break;
 				case "list-id-table_coltime":
 					time = cell.innerText && cell.innerText != " " ? cell.innerText.split('-') : null;
@@ -121,11 +121,10 @@ document.getElementById("export-id").addEventListener("click", function() {
 			}
 		}
 		if (type != null) {
-			var title = crse + " - " + type;
+			var title = (crse + " - " + type).replace(/\s\s+/g, ' ');
 			var location = bldg + " " + room;
 			var event = new CourseEvent(title, days, time, location);
 			calendar.addCourseEvent(event);
-//			console.log("MTuWThF".split(/(?=[A-Z])/));
 		}
 	}
 
